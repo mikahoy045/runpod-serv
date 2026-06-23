@@ -1,0 +1,43 @@
+{
+  "input": {
+    "defaults": {
+      "aspect_ratio": "9:16",
+      "resolution": "720p",
+      "fps": 24,
+      "style": "real",
+      "transition": "crossfade",
+      "transition_duration": 0.5,
+      "audio": true,
+      "negative_prompt": "modern objects, cars, power lines, plastic, text, watermark, blurry, distorted, deformed hands, extra limbs"
+    },
+    "ideas": [
+      {
+        "id": "egypt-1500bc",
+        "title": "How is life in Egypt at 1500 BC",
+        "scenes": [
+          {
+            "prompt": "Sunrise over the Nile in ancient Egypt, 1500 BC. Farmers in white linen kilts walk to the fields carrying bronze tools, mist on the water, date palms along the bank.",
+            "camera_motion": "dolly_in",
+            "duration_seconds": 3
+          },
+          {
+            "prompt": "Workers harvesting golden wheat with bronze sickles under a blazing sun, chaff drifting in the air, an overseer watching nearby.",
+            "camera_motion": "dolly_right",
+            "duration_seconds": 5
+          },
+          {
+            "prompt": "An Egyptian woman in patterned linen walks through a busy sunlit marketplace beside stone temple columns, people trading and walking under parasols in the background.",
+            "camera_motion": "dolly_in",
+            "duration_seconds": 6,
+            "keyframe": "egypt_marketplace.jpeg"
+          },
+          {
+            "prompt": "Sunset over the river, reed fishing boats drifting past tall limestone temple pylons and obelisks, sky glowing orange.",
+            "camera_motion": "static",
+            "duration_seconds": 4
+          }
+        ]
+      }
+    ]
+  }
+}

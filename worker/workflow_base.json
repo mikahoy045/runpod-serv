@@ -1,0 +1,412 @@
+{
+  "1": {
+    "inputs": {
+      "unet_name": "ltx-2.3-22b-distilled-1.1_transformer_only_fp8_scaled.safetensors",
+      "weight_dtype": "default"
+    },
+    "class_type": "UNETLoader"
+  },
+  "2": {
+    "inputs": {
+      "clip_name1": "gemma_3_12B_it_fpmixed.safetensors",
+      "clip_name2": "ltx-2.3_text_projection_bf16.safetensors",
+      "type": "ltxv"
+    },
+    "class_type": "DualCLIPLoader"
+  },
+  "3": {
+    "inputs": {
+      "vae_name": "LTX23_video_vae_bf16.safetensors"
+    },
+    "class_type": "VAELoader"
+  },
+  "4": {
+    "inputs": {
+      "vae_name": "LTX23_audio_vae_bf16.safetensors",
+      "weight_dtype": "bf16",
+      "device": "main_device"
+    },
+    "class_type": "VAELoaderKJ"
+  },
+  "5": {
+    "inputs": {
+      "model_name": "ltx-2.3-spatial-upscaler-x2-1.1.safetensors"
+    },
+    "class_type": "LatentUpscaleModelLoader"
+  },
+  "6": {
+    "inputs": {
+      "model": [
+        "7",
+        0
+      ],
+      "lora_01": {
+        "on": false,
+        "lora": "ltx-2-19b-lora-camera-control-static.safetensors",
+        "strength": 0.8
+      }
+    },
+    "class_type": "Power Lora Loader (rgthree)"
+  },
+  "10": {
+    "inputs": {
+      "text": "a slow dolly shot of a bioluminescent deep sea creature floating in dark waters",
+      "clip": [
+        "2",
+        0
+      ]
+    },
+    "class_type": "CLIPTextEncode"
+  },
+  "11": {
+    "inputs": {
+      "text": "worst quality, blurry, distorted, watermark, text, low quality",
+      "clip": [
+        "2",
+        0
+      ]
+    },
+    "class_type": "CLIPTextEncode"
+  },
+  "12": {
+    "inputs": {
+      "positive": [
+        "10",
+        0
+      ],
+      "negative": [
+        "11",
+        0
+      ],
+      "frame_rate": 24
+    },
+    "class_type": "LTXVConditioning"
+  },
+  "20": {
+    "inputs": {
+      "image": "input.png",
+      "upload": "image"
+    },
+    "class_type": "LoadImage"
+  },
+  "21": {
+    "inputs": {
+      "image": [
+        "20",
+        0
+      ],
+      "num_frames": 33,
+      "img_compression": 35
+    },
+    "class_type": "LTXVPreprocess"
+  },
+  "30": {
+    "inputs": {
+      "width": 704,
+      "height": 512,
+      "length": 121,
+      "batch_size": 1
+    },
+    "class_type": "EmptyLTXVLatentVideo"
+  },
+  "31": {
+    "inputs": {
+      "frames_number": 121,
+      "frame_rate": 24,
+      "batch_size": 1,
+      "audio_vae": [
+        "4",
+        0
+      ]
+    },
+    "class_type": "LTXVEmptyLatentAudio"
+  },
+  "32": {
+    "inputs": {
+      "latent": [
+        "30",
+        0
+      ],
+      "vae": [
+        "3",
+        0
+      ],
+      "image": [
+        "21",
+        0
+      ],
+      "strength": 1.0,
+      "bypass": false
+    },
+    "class_type": "LTXVImgToVideoInplace"
+  },
+  "33": {
+    "inputs": {
+      "video_latent": [
+        "32",
+        0
+      ],
+      "audio_latent": [
+        "31",
+        0
+      ]
+    },
+    "class_type": "LTXVConcatAVLatent"
+  },
+  "40": {
+    "inputs": {
+      "steps": 8,
+      "max_shift": 2.05,
+      "base_shift": 0.95,
+      "stretch": true,
+      "terminal": 0.1
+    },
+    "class_type": "LTXVScheduler"
+  },
+  "41": {
+    "inputs": {
+      "sampler_name": "lcm"
+    },
+    "class_type": "KSamplerSelect"
+  },
+  "42": {
+    "inputs": {
+      "noise_seed": 43
+    },
+    "class_type": "RandomNoise"
+  },
+  "43": {
+    "inputs": {
+      "model": [
+        "6",
+        0
+      ],
+      "positive": [
+        "12",
+        0
+      ],
+      "negative": [
+        "12",
+        1
+      ],
+      "cfg": 1.0
+    },
+    "class_type": "CFGGuider"
+  },
+  "44": {
+    "inputs": {
+      "noise": [
+        "42",
+        0
+      ],
+      "guider": [
+        "43",
+        0
+      ],
+      "sampler": [
+        "41",
+        0
+      ],
+      "sigmas": [
+        "40",
+        0
+      ],
+      "latent_image": [
+        "33",
+        0
+      ]
+    },
+    "class_type": "SamplerCustomAdvanced"
+  },
+  "45": {
+    "inputs": {
+      "av_latent": [
+        "44",
+        0
+      ]
+    },
+    "class_type": "LTXVSeparateAVLatent"
+  },
+  "50": {
+    "inputs": {
+      "samples": [
+        "45",
+        0
+      ],
+      "upscale_model": [
+        "5",
+        0
+      ],
+      "vae": [
+        "3",
+        0
+      ]
+    },
+    "class_type": "LTXVLatentUpsampler"
+  },
+  "51": {
+    "inputs": {
+      "latent": [
+        "50",
+        0
+      ],
+      "vae": [
+        "3",
+        0
+      ],
+      "image": [
+        "21",
+        0
+      ],
+      "strength": 1.0,
+      "bypass": false
+    },
+    "class_type": "LTXVImgToVideoInplace"
+  },
+  "52": {
+    "inputs": {
+      "video_latent": [
+        "51",
+        0
+      ],
+      "audio_latent": [
+        "45",
+        1
+      ]
+    },
+    "class_type": "LTXVConcatAVLatent"
+  },
+  "60": {
+    "inputs": {
+      "sigmas": "0.909375, 0.725, 0.421875, 0.0"
+    },
+    "class_type": "ManualSigmas"
+  },
+  "61": {
+    "inputs": {
+      "sampler_name": "lcm"
+    },
+    "class_type": "KSamplerSelect"
+  },
+  "62": {
+    "inputs": {
+      "noise_seed": 420
+    },
+    "class_type": "RandomNoise"
+  },
+  "63": {
+    "inputs": {
+      "model": [
+        "6",
+        0
+      ],
+      "positive": [
+        "12",
+        0
+      ],
+      "negative": [
+        "12",
+        1
+      ],
+      "cfg": 1.0
+    },
+    "class_type": "CFGGuider"
+  },
+  "64": {
+    "inputs": {
+      "noise": [
+        "62",
+        0
+      ],
+      "guider": [
+        "63",
+        0
+      ],
+      "sampler": [
+        "61",
+        0
+      ],
+      "sigmas": [
+        "60",
+        0
+      ],
+      "latent_image": [
+        "52",
+        0
+      ]
+    },
+    "class_type": "SamplerCustomAdvanced"
+  },
+  "65": {
+    "inputs": {
+      "av_latent": [
+        "64",
+        0
+      ]
+    },
+    "class_type": "LTXVSeparateAVLatent"
+  },
+  "70": {
+    "inputs": {
+      "tile_size": 512,
+      "overlap": 64,
+      "temporal_size": 64,
+      "temporal_overlap": 8,
+      "samples": [
+        "65",
+        0
+      ],
+      "vae": [
+        "3",
+        0
+      ]
+    },
+    "class_type": "VAEDecodeTiled"
+  },
+  "71": {
+    "inputs": {
+      "samples": [
+        "65",
+        1
+      ],
+      "audio_vae": [
+        "4",
+        0
+      ]
+    },
+    "class_type": "LTXVAudioVAEDecode"
+  },
+  "80": {
+    "inputs": {
+      "frame_rate": 24,
+      "loop_count": 0,
+      "filename_prefix": "ltx_i2v",
+      "format": "video/h264-mp4",
+      "pix_fmt": "yuv420p",
+      "crf": 19,
+      "save_metadata": true,
+      "pingpong": false,
+      "save_output": true,
+      "images": [
+        "70",
+        0
+      ],
+      "audio": [
+        "71",
+        0
+      ]
+    },
+    "class_type": "VHS_VideoCombine"
+  },
+  "7": {
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "chunks": 2,
+      "dim_threshold": 4096
+    },
+    "class_type": "LTXVChunkFeedForward"
+  }
+}
