@@ -48,6 +48,15 @@ fetch_model() {
   fi
   mkdir -p "$(dirname "$dest")"
   echo "ltx-batch: fetching ${rel}"
+  if command -v aria2c >/dev/null 2>&1 && aria2c -c -x 16 -s 16 -k 1M \
+      --max-tries=10 --retry-wait=3 --timeout=60 --console-log-level=warn \
+      --summary-interval=0 --allow-overwrite=true \
+      -d "$(dirname "$dest")" -o "$(basename "$dest").part" "$url"; then
+    mv "${dest}.part" "$dest"
+    echo "ltx-batch: done ${rel}"
+    return 0
+  fi
+  echo "ltx-batch: aria2c failed, falling back to wget for ${rel}"
   if wget -q --tries=5 --timeout=120 --continue -O "${dest}.part" "$url"; then
     mv "${dest}.part" "$dest"
     echo "ltx-batch: done ${rel}"

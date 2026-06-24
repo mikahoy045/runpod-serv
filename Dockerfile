@@ -54,6 +54,9 @@ RUN cd custom_nodes && \
 
 RUN pip cache purge
 
+RUN apt-get update && apt-get install -y --no-install-recommends aria2 \
+    && apt-get clean -y && rm -rf /var/lib/apt/lists/*
+
 COPY src/extra_model_paths.yaml /comfyui/extra_model_paths.yaml
 
 WORKDIR /app
