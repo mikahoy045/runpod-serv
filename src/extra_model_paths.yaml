@@ -1,0 +1,12 @@
+runpod_worker_comfy:
+  base_path: /runpod-volume
+  diffusion_models: models/diffusion_models/
+  text_encoders: models/text_encoders/
+  loras: models/loras/
+  latent_upscale_models: models/latent_upscale_models/
+  vae: models/vae/
+  vae_approx: models/vae_approx/
+  clip: models/clip/
+  clip_vision: models/clip_vision/
+  controlnet: models/controlnet/
+  unet: models/unet/
