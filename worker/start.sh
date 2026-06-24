@@ -12,6 +12,8 @@ if [ -d "$VOLUME_ROOT" ]; then
 else
   MODELS_ROOT="/comfyui/models"
 fi
+READY_FILE="${MODELS_ROOT}/.models_ready"
+export LTX_MODELS_READY_FILE="$READY_FILE"
 
 HF_BASE="${LTX_HF_BASE:-https://huggingface.co}"
 KIJAI="${HF_BASE}/Kijai/LTX2.3_comfy/resolve/main"
@@ -56,12 +58,23 @@ fetch_model() {
   return 1
 }
 
-MISSING=0
-while IFS='|' read -r rel url; do
-  [ -z "$rel" ] && continue
-  fetch_model "$rel" "$url" || MISSING=1
-done <<< "$MODELS"
-[ "$MISSING" = "1" ] && echo "ltx-batch: WARNING some models missing; renders needing them will fail"
+populate_models() {
+  mkdir -p "$MODELS_ROOT"
+  rm -f "$READY_FILE"
+  local missing=0
+  while IFS='|' read -r rel url; do
+    [ -z "$rel" ] && continue
+    fetch_model "$rel" "$url" || missing=1
+  done <<< "$MODELS"
+  if [ "$missing" = "0" ]; then
+    touch "$READY_FILE"
+    echo "ltx-batch: ALL MODELS READY"
+  else
+    echo "ltx-batch: WARNING some models missing; renders needing them will fail"
+  fi
+}
+
+populate_models &
 
 echo "ltx-batch: starting ComfyUI"
 python3 /comfyui/main.py --disable-auto-launch --disable-metadata --preview-method taesd \

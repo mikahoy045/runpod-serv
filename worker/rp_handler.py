@@ -48,6 +48,18 @@ def _load_base():
     return _base
 
 
+def _wait_for_models():
+    marker = config.MODELS_READY_FILE
+    if not marker:
+        return
+    deadline = time.time() + config.MODELS_READY_TIMEOUT
+    while time.time() < deadline:
+        if os.path.exists(marker):
+            return
+        time.sleep(2)
+    raise RuntimeError("models not ready: background download did not complete within timeout")
+
+
 def _png(width, height, rgb=(120, 110, 90)):
     def chunk(tag, data):
         body = tag + data
@@ -173,6 +185,7 @@ def handler(job):
         return {"error": "missing 'ideas' (or 'scenes')"}
 
     defaults = job_input.get("defaults", {})
+    _wait_for_models()
     base = _load_base()
     _upload_image(config.BLANK_IMAGE_NAME, _png(512, 512))
 
