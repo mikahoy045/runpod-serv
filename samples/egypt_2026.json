@@ -1,0 +1,42 @@
+{
+  "input": {
+    "defaults": {
+      "aspect_ratio": "9:16",
+      "resolution": "720p",
+      "fps": 24,
+      "style": "real",
+      "transition": "crossfade",
+      "transition_duration": 0.5,
+      "audio": true,
+      "negative_prompt": "text, watermark, logo, blurry, distorted, deformed hands, extra limbs, low quality, warped faces, oversaturated, cartoonish"
+    },
+    "ideas": [
+      {
+        "id": "egypt-2026",
+        "title": "A day in modern Egypt, 2026",
+        "scenes": [
+          {
+            "prompt": "Aerial sunrise over modern Cairo in 2026, the Nile winding past glass high-rises and lit suspension bridges, feluccas and motorboats on the water, soft morning haze, warm golden light.",
+            "camera_motion": "dolly_in",
+            "duration_seconds": 5
+          },
+          {
+            "prompt": "The New Administrative Capital at midday, gleaming futuristic skyscrapers and the Iconic Tower, a sleek monorail gliding past palm-lined boulevards, clean reflective glass, blue sky.",
+            "camera_motion": "dolly_right",
+            "duration_seconds": 6
+          },
+          {
+            "prompt": "Bustling modern Cairo street at golden hour, neon shop signs, people in everyday clothes holding smartphones, street food vendors and parked cars, lively crowd, cinematic shallow depth of field.",
+            "camera_motion": "dolly_in",
+            "duration_seconds": 5
+          },
+          {
+            "prompt": "Pyramids of Giza at sunset beside the illuminated Grand Egyptian Museum, tourists strolling, a camera drone in the sky, warm orange light fading to dusk.",
+            "camera_motion": "static",
+            "duration_seconds": 5
+          }
+        ]
+      }
+    ]
+  }
+}

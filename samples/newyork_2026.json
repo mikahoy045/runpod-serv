@@ -1,0 +1,42 @@
+{
+  "input": {
+    "defaults": {
+      "aspect_ratio": "9:16",
+      "resolution": "720p",
+      "fps": 24,
+      "style": "real",
+      "transition": "crossfade",
+      "transition_duration": 0.5,
+      "audio": true,
+      "negative_prompt": "text, watermark, logo, blurry, distorted, deformed hands, extra limbs, low quality, warped faces, oversaturated, cartoonish"
+    },
+    "ideas": [
+      {
+        "id": "newyork-2026",
+        "title": "A day in New York City, 2026",
+        "scenes": [
+          {
+            "prompt": "Aerial sunrise over the Manhattan skyline in 2026, the Hudson and East rivers glinting, One World Trade Center and the Empire State Building catching warm golden light, soft morning haze.",
+            "camera_motion": "dolly_in",
+            "duration_seconds": 5
+          },
+          {
+            "prompt": "Times Square at its busiest, towering animated LED billboards, yellow cabs and crowds crossing the street, vivid neon reflections on wet pavement, energetic city atmosphere.",
+            "camera_motion": "dolly_right",
+            "duration_seconds": 6
+          },
+          {
+            "prompt": "Brooklyn Bridge at golden hour with the Manhattan skyline behind, pedestrians and cyclists crossing, sunlight flaring through the steel cables, cinematic shallow depth of field.",
+            "camera_motion": "dolly_in",
+            "duration_seconds": 5
+          },
+          {
+            "prompt": "Sweeping view of Central Park giving way to the midtown skyline at dusk, city lights switching on across the buildings, twilight sky in deep blue and gold.",
+            "camera_motion": "static",
+            "duration_seconds": 5
+          }
+        ]
+      }
+    ]
+  }
+}
